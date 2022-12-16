@@ -1,0 +1,119 @@
+#root {
+    /* max-width: 1280px; */
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    /* width: 100%; */
+}
+
+.board {
+    display: grid;
+    gap: 1em;
+}
+
+@media screen and (max-width: 1600px) {
+    #root {
+        width: 100%;
+    }
+
+    .board {
+        grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)) !important;
+        grid-auto-flow: row;
+        max-width: 100%;
+        gap: 1em;
+    }
+}
+
+.board .card {
+    background: #2e2e2e;
+    cursor: pointer;
+    width: 175px;
+    height: 175px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    user-select: none;
+    transform: rotateY(180deg);
+    transition: transform .4s ease, background .2s ease;
+}
+
+.board .card-inner {
+    transform: rotateY(180deg);
+    transition: transform .4s ease;
+    backface-visibility: hidden;
+}
+
+.board .card.revealed {
+    background: #175c17;
+    cursor: not-allowed;
+    transform: rotateY(0)
+}
+
+.board .card.revealed .card-inner,
+.board .card.clicked .card-inner {
+    transform: rotateY(0);
+}
+
+.board .card.clicked {
+    background: #a77d28;
+    transform: rotateY(0)
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+
+.menu form {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+.menu form .form-item {
+    margin: 0.5em 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu form .form-item label {
+    margin: 0.25em 0;
+}
+
+.menu form .form-item button {
+    width: 100%;
+}
+
+.overlay {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.30);
+    backdrop-filter: blur(4px);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.overlay p {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0em;
+}
+
+.overlay button {
+    width: 150px;
+}
+
+.overlay span {
+    font-size: 1.5em;
+    margin: 1.5em 0;
+}
