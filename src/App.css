@@ -1,14 +1,21 @@
 #root {
-    /* max-width: 1280px; */
+    max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
-    /* width: 100%; */
+    width: 100%;
 }
 
 .board {
     display: grid;
     gap: 1em;
+}
+
+.board-outer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 1600px) {
@@ -61,17 +68,26 @@
     transform: rotateY(0)
 }
 
+.container {
+    position: relative;
+    width: 100%;
+}
+
 .menu {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: center;
+    flex-direction: column;
 }
 
 .menu form {
     display: flex;
     flex-direction: column;
     min-width: 200px;
+    width: 100%;
+    max-width: 360px;
 }
 
 .menu form .form-item {
@@ -116,4 +132,9 @@
 .overlay span {
     font-size: 1.5em;
     margin: 1.5em 0;
+}
+
+.App .menu footer {
+    margin-top: 2em;
+    opacity: 0.8;
 }

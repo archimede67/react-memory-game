@@ -1,22 +1,8 @@
 import { ChangeEvent, FormEvent, MouseEventHandler, useState, useEffect } from "react";
 import "./App.css";
-
-function shuffle(array: any[]) {
-	let currentIndex = array.length,
-		randomIndex;
-
-	// While there remain elements to shuffle.
-	while (currentIndex != 0) {
-		// Pick a remaining element.
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex--;
-
-		// And swap it with the current element.
-		[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-	}
-
-	return array;
-}
+import SYMBOLS from "./symbols";
+import { generateCards, shuffle } from "./utils";
+import GithubIcon from "./GithubIcon";
 
 function MainMenu({
 	cardCount,
@@ -55,6 +41,10 @@ function MainMenu({
 					<button>Play</button>
 				</div>
 			</form>
+
+			<footer>
+				<GithubIcon url="https://github.com/archimede67/react-memory-game" />
+			</footer>
 		</div>
 	);
 }
@@ -119,8 +109,8 @@ const Board = ({ cards, onFinished }: BoardProps) => {
 	}, [revealedCards]);
 
 	return (
-		<div style={{ position: "relative" }}>
-			<button onClick={goBack} style={{ marginRight: "1em", position: "absolute", top: -75, left: 0 }}>
+		<div className="board-outer">
+			<button onClick={goBack} style={{ marginRight: "1em", position: "absolute", top: -80, left: 0 }}>
 				Back
 			</button>
 			{gameEnded && (
@@ -145,7 +135,8 @@ const Board = ({ cards, onFinished }: BoardProps) => {
 					return (
 						<div
 							className={`card ${isCardClicked ? "clicked" : ""} ${isCardRevealed ? "revealed" : ""}`}
-							onClick={handleCardClick(card, cardIndex)}>
+							onClick={handleCardClick(card, cardIndex)}
+							key={cardIndex}>
 							<div className="card-inner">{(isCardClicked || isCardRevealed) && card.symbol}</div>
 						</div>
 					);
@@ -154,57 +145,6 @@ const Board = ({ cards, onFinished }: BoardProps) => {
 		</div>
 	);
 };
-
-const SYMBOLS = [
-	"🍍",
-	"🌽",
-	"💸",
-	"🍗",
-	"🍮",
-	"🐂",
-	"📚",
-	"🎬",
-	"⚽️",
-	"🖖",
-	"🙊",
-	"🔥",
-	"🐧",
-	"🍟",
-	"🏰",
-	"🐋",
-	"🎂",
-	"🏉",
-	"🛢",
-	"🐳",
-	"🐷",
-	"🦄",
-	"🌱",
-	"🍐",
-	"🍩",
-	"🍏",
-	"🚛",
-	"🎓",
-	"🍠",
-	"🙍",
-	"🐗",
-	"👴",
-	"🍸",
-	"☔️",
-	"🐤",
-	"🍋",
-	"🌿",
-	"🚣",
-	"🐵",
-	"🐎",
-	"🔔",
-	"🐮",
-	"🙆",
-	"🐙",
-	"👧",
-	"🐩",
-	"👄",
-	"🍾",
-];
 
 type Card = {
 	symbol: string;
@@ -215,30 +155,11 @@ type Card = {
 function App() {
 	const [cardCount, setCardCount] = useState(4);
 	const [gameStarted, setGameStarted] = useState(false);
-
 	const [cards, setCards] = useState<Card[]>([]);
 
-	const generateCards = () => {
-		const generatedCards = [];
-		const subsymbols = [...SYMBOLS];
-		for (let i = 0; i < cardCount / 2; i++) {
-			const randIndex = Math.floor(Math.random() * subsymbols.length);
-			const symbol = subsymbols[randIndex];
-			subsymbols.splice(randIndex, 1);
-			for (let j = 0; j < 2; j++)
-				generatedCards.push({
-					symbol,
-					revealed: false,
-					clicked: false,
-					id: symbol + (j + 1),
-				});
-		}
-		setCards(shuffle(generatedCards));
-		// console.log(cardCount, generatedCards);
-	};
-
 	const startGame = () => {
-		generateCards();
+		const generatedCards = generateCards(SYMBOLS, cardCount);
+		setCards(generatedCards);
 
 		setGameStarted(true);
 	};
